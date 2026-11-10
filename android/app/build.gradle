@@ -1,0 +1,18 @@
+plugins {
+    id 'com.android.application'
+    id 'dev.flutter.flutter-gradle-plugin'
+}
+android {
+    namespace 'com.example.hdrscreentest'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'com.example.hdrscreentest'
+        minSdk 29
+        targetSdk 36
+        versionCode flutter.versionCode
+        versionName flutter.versionName
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+flutter { source '../..' }
+

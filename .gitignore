@@ -1,0 +1,11 @@
+# Generated and local files
+.dart_tool/
+.flutter-plugins-dependencies
+build/
+android/local.properties
+android/.gradle/
+apk-analysis/
+release/
+android/.cxx/
+*.iml
+

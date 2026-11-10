@@ -1,0 +1,78 @@
+name: flutter_miuix
+description: A localized, cross-platform Flutter implementation of MIUIX components for Android and Windows.
+version: 1.2.1
+publish_to: none
+
+environment:
+  sdk: ">=3.10.0 <4.0.0"
+  flutter: ">=3.38.0"
+
+dependencies:
+  # 0.8.3 still fails when Flutter 3.44.1 disables AGP 9 built-in Kotlin.
+  desktop_drop: ">=0.7.1 <0.8.0"
+  flutter:
+    sdk: flutter
+  # 1.2.0 requires meta ^1.18.1, while Flutter 3.44.1 pins meta 1.18.0.
+  libmonet: 1.1.2
+  # 可变高度长列表按索引定位，不靠固定行高截断长标题。
+  # 固定版本用于复核Flutter升级后的布局和键盘行为。
+  super_sliver_list: 0.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  plugin:
+    platforms:
+      android:
+        package: com.xinxin.flutter_miuix
+        pluginClass: FlutterMiuixPlugin
+  shaders:
+    # Static MIUIX squircle mask using the upstream baked 512px SDF.
+    - shaders/miuix_squircle_mask.frag
+    # Custom MIUIX blend modes (Lab, linear light, MI dodge/burn) cannot be
+    # represented by Flutter's standard BlendMode enum. This runtime filter is
+    # a direct port of miuix-blur/internal/Shaders.kt.
+    - shaders/miuix_texture_blend.frag
+    # Lean standard-mode specialization matching the source's runtime shader
+    # variant selection and avoiding extended Lab register pressure.
+    - shaders/miuix_texture_blend_standard.frag
+    # Lean Lab specialization for the Foreground Blur Logo Blend preset.
+    - shaders/miuix_texture_blend_logo.frag
+    # Lean non-Lab specialization for the source arithmetic blend presets.
+    - shaders/miuix_texture_blend_arithmetic.frag
+    # Lean specialization for the source's standalone Lab blend modes.
+    - shaders/miuix_texture_blend_lab.frag
+    # Per-pixel variable-radius Gaussian used by ProgressiveTextureBlur.
+    - shaders/miuix_progressive_blur.frag
+    # Direct port of the current two-light BloomStroke edge shader used by
+    # TextureBlur's container highlight presets.
+    - shaders/miuix_bloom_stroke.frag
+    - shaders/miuix_bloom_stroke_dual.frag
+    # Current iOS-like navigation lens, including press-time dispersion.
+    - shaders/miuix_liquid_lens.frag
+  assets:
+    # Lossless alpha image generated from upstream BakedSquircleSdf.kt.
+    - assets/squircle/miuix_squircle_sdf.png
+  fonts:
+    - family: MiuixIconsBasic
+      fonts:
+        - asset: assets/fonts/MiuixIcons-Basic.ttf
+    - family: MiuixIconsLight
+      fonts:
+        - asset: assets/fonts/MiuixIcons-Light.ttf
+    - family: MiuixIconsNormal
+      fonts:
+        - asset: assets/fonts/MiuixIcons-Normal.ttf
+    - family: MiuixIconsRegular
+      fonts:
+        - asset: assets/fonts/MiuixIcons-Regular.ttf
+    - family: MiuixIconsMedium
+      fonts:
+        - asset: assets/fonts/MiuixIcons-Medium.ttf
+    - family: MiuixIconsDemibold
+      fonts:
+        - asset: assets/fonts/MiuixIcons-Demibold.ttf

@@ -1,0 +1,14 @@
+name: hdr_screen_test
+description: Display information and HDR playback test.
+publish_to: none
+version: 0.1.0-alpha.1+1
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_miuix:
+    path: packages/flutter_miuix
+flutter:
+  uses-material-design: true
+

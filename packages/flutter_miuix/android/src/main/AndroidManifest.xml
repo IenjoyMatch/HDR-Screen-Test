@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Flutter PopScope and MIUIX overlay hosts require Android's current
+         back callback so a modal surface consumes Back before the Activity. -->
+    <application android:enableOnBackInvokedCallback="true" />
+</manifest>
