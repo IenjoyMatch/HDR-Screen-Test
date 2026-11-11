@@ -1,4 +1,4 @@
-name: Release v0.1.1
+name: Release v0.1.5
 on:
   workflow_dispatch:
   push:
@@ -7,7 +7,7 @@ permissions:
   contents: write
 jobs:
   build-and-release:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Release v0.1.1'
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Release v0.1.5'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk HDR-Screen-Test-v0.1.1-arm64-v8a.apk
-          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk HDR-Screen-Test-v0.1.1-armeabi-v7a.apk
-          gh release create v0.1.1 HDR-Screen-Test-v0.1.1-arm64-v8a.apk HDR-Screen-Test-v0.1.1-armeabi-v7a.apk --title 'HDR Screen Test v0.1.1' --notes-file RELEASE_NOTES_v0.1.1.md
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk HDR-Screen-Test-v0.1.5-arm64-v8a.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk HDR-Screen-Test-v0.1.5-armeabi-v7a.apk
+          gh release create v0.1.5 HDR-Screen-Test-v0.1.5-arm64-v8a.apk HDR-Screen-Test-v0.1.5-armeabi-v7a.apk --title 'HDR Screen Test v0.1.5' --notes-file RELEASE_NOTES_v0.1.5.md
 

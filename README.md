@@ -1,6 +1,6 @@
 # HDR Screen Test
 
-一款采用 MIUIX 风格悬浮导航的 Android 屏幕检测应用。当前版本为 **v0.1.1**，最低支持 Android 10（API 29）。
+一款采用 MIUIX 风格悬浮导航的 Android 屏幕检测应用。当前版本为 **v0.1.5**，最低支持 Android 10（API 29）。
 
 ## 功能
 
@@ -25,9 +25,9 @@ Android 14 及以上支持以下测试图：
 
 - **PQ 亮度阶梯**：观察不同亮度信号的层次和高光裁切。
 - **HLG 渐变**：观察亮度过渡和渐变断层。
-- **PQ 面积色块**：通过 `Area` 切换色块面积，通过 `Level` 切换亮度信号，观察不同条件下的表现。
+- **PQ 面积色块**：通过滑块调整色块面积和亮度信号，观察不同条件下的表现。
 
-使用 `Next` 切换图案，点击图案可隐藏或显示控制栏，使用 `Close` 或系统返回键退出。图上标注的亮度是目标信号值，不是仪器实测值；实际 HDR 输出取决于设备及系统显示链路。
+使用底部设置面板选择图案、调整面积与亮度；下拉或点击收起，轻触画面重新打开设置。图上标注的亮度是目标信号值，不是仪器实测值；实际 HDR 输出取决于设备及系统显示链路。
 
 ### HDR 视频和 SDR 图案
 
@@ -36,7 +36,7 @@ Android 14 及以上支持以下测试图：
 
 ## 下载与构建
 
-从 [Releases](https://github.com/IenjoyMatch/HDR-Screen-Test/releases) 下载对应设备的 APK：大多数现代手机选择 `arm64-v8a`，32 位 ARM 设备选择 `armeabi-v7a`。当前为测试签名包，不同构建或后续正式版本可能无法直接覆盖安装。
+从 [Releases](https://github.com/IenjoyMatch/HDR-Screen-Test/releases) 下载对应设备的 APK：大多数现代手机选择 `arm64-v8a`，32 位 ARM 设备选择 `armeabi-v7a`。v0.1.5 使用新的测试签名，需卸载旧版后安装；卸载会删除应用本地数据。
 
 构建需要 Flutter 3.44.1、JDK 17、Android SDK 36、NDK 28.2 和 CMake 3.22.1：
 

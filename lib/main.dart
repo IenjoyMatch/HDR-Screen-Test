@@ -15,6 +15,9 @@ class App extends StatelessWidget {
       data: MiuixThemeData.defaults(seedColor: const Color(0xff3482ff))
           .copyWith(
             hyperOs4: const MiuixHyperOs4Tokens(
+              floatingNavigationHeight: 52,
+              floatingNavigationItemHeight: 48,
+              floatingNavigationContentSpacing: 2,
               floatingNavigationHorizontalPadding: 3,
               floatingNavigationSelectionInset: 0,
             ),
@@ -174,7 +177,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             onPressed: () => showLicensePage(
               context: context,
               applicationName: 'HDR Screen Test',
-              applicationVersion: '0.1.1',
+              applicationVersion: '0.1.5',
             ),
             child: const Text('开源许可证'),
           ),
