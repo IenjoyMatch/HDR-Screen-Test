@@ -1,6 +1,6 @@
 # HDR Screen Test
 
-一款采用 MIUIX 风格悬浮导航的 Android 屏幕检测应用。目前为 **v0.1.0-alpha.1**，最低支持 Android 10（API 29）。
+一款采用 MIUIX 风格悬浮导航的 Android 屏幕检测应用。当前版本为 **v0.1.1**，最低支持 Android 10（API 29）。
 
 ## 功能
 
@@ -36,14 +36,14 @@ Android 14 及以上支持以下测试图：
 
 ## 下载与构建
 
-从 [Releases](https://github.com/IenjoyMatch/HDR-Screen-Test/releases) 下载 Alpha APK。当前为调试签名包，不同构建或后续正式版本可能无法直接覆盖安装。
+从 [Releases](https://github.com/IenjoyMatch/HDR-Screen-Test/releases) 下载对应设备的 APK：大多数现代手机选择 `arm64-v8a`，32 位 ARM 设备选择 `armeabi-v7a`。当前为测试签名包，不同构建或后续正式版本可能无法直接覆盖安装。
 
 构建需要 Flutter 3.44.1、JDK 17、Android SDK 36、NDK 28.2 和 CMake 3.22.1：
 
 ```bash
 flutter pub get
 flutter analyze lib
-flutter build apk --debug
+flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64
 ```
 
 Compile SDK 和 Target SDK 均为 36。HDR 功能尚未经过真机验证，不能替代专业仪器测量。

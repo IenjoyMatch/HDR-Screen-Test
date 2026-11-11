@@ -1,3 +1,4 @@
+// Modified for HDR Screen Test: optional size-aware capsule geometry.
 part of '../miuix_widgets.dart';
 
 /// Public source metrics used by [MiuixNavigationBar].
@@ -562,6 +563,7 @@ class MiuixFloatingNavigationBar extends StatelessWidget {
     this.onDestinationSelected,
     this.color,
     this.cornerRadius = double.nan,
+    this.capsule = false,
     this.displayMode = MiuixFloatingNavigationBarDisplayMode.iconAndText,
     this.alignment = MiuixFloatingNavigationBarAlignment.center,
     this.horizontalOutsidePadding = 20,
@@ -602,6 +604,9 @@ class MiuixFloatingNavigationBar extends StatelessWidget {
   ///
   /// The default NaN sentinel resolves through the HyperOS 4 theme token.
   final double cornerRadius;
+
+  /// Use size-aware continuous capsule outlines for the surface and selection.
+  final bool capsule;
 
   /// Icon and label visibility mode from the current source component.
   final MiuixFloatingNavigationBarDisplayMode displayMode;
@@ -847,7 +852,14 @@ class MiuixFloatingNavigationBar extends StatelessWidget {
       itemSpacing: sourceItemSpacing,
       surfaceHeight: sourceSurfaceMinHeight + captionExtra,
       selectionInset: safeSelectionInset,
-      selectionHeight: safeSelectionHeight,
+      selectionHeight: capsule
+          ? math.max(
+              0.0,
+              math.max(sourceSurfaceMinHeight + captionExtra, safeItemHeight) -
+                  2 * (sourceHorizontalPadding + safeSelectionInset),
+            )
+          : safeSelectionHeight,
+      capsule: capsule,
       surfaceCornerRadius: effectiveCornerRadius,
       dragEnabled: dragEnabled && (onDestinationSelected ?? onSelected) != null,
       dragSelectionInset: safeDragSelectionInset,
@@ -868,8 +880,9 @@ class MiuixFloatingNavigationBar extends StatelessWidget {
         ? math.max(0.0, shadowElevation)
         : 0.0;
     final Widget bar;
-    ShapeBorder navigationShape([BorderSide side = BorderSide.none]) =>
-        miuixTheme.enableSquircle
+    ShapeBorder navigationShape([BorderSide side = BorderSide.none]) => capsule
+        ? MiuixCapsuleBorder(side: side)
+        : miuixTheme.enableSquircle
         ? MiuixSquircleBorder(
             borderRadius: BorderRadius.circular(effectiveCornerRadius),
             side: side,
@@ -905,6 +918,7 @@ class MiuixFloatingNavigationBar extends StatelessWidget {
           enabled: miuixTheme.enableGlass,
           color: panelColor,
           radius: effectiveCornerRadius,
+          shape: capsule ? navigationShape() : null,
           padding: EdgeInsets.symmetric(horizontal: sourceHorizontalPadding),
           showSpecular: true,
           optics: MiuixGlassOptics.navigation,
@@ -927,7 +941,7 @@ class MiuixFloatingNavigationBar extends StatelessWidget {
       );
       bar = KeyedSubtree(
         key: const ValueKey('floating-navigation-surface'),
-        child: miuixTheme.enableSquircle
+        child: miuixTheme.enableSquircle && !capsule
             ? DecoratedBox(
                 // The SDF owns the fill. ShapeDecoration retains only the
                 // optional source divider above that exact background.
@@ -1048,6 +1062,7 @@ class _MiuixFloatingNavigationContent extends StatefulWidget {
     required this.surfaceHeight,
     required this.selectionInset,
     required this.selectionHeight,
+    required this.capsule,
     required this.surfaceCornerRadius,
     required this.dragEnabled,
     required this.dragSelectionInset,
@@ -1069,6 +1084,7 @@ class _MiuixFloatingNavigationContent extends StatefulWidget {
   final double surfaceHeight;
   final double selectionInset;
   final double selectionHeight;
+  final bool capsule;
   final double surfaceCornerRadius;
   final bool dragEnabled;
   final double dragSelectionInset;
@@ -1437,7 +1453,9 @@ class _MiuixFloatingNavigationContentState
               indicatorHeight / 2,
               math.max(0.0, surfaceCornerRadius - indicatorTop),
             );
-            final indicatorShape = theme.enableSquircle
+            final indicatorShape = widget.capsule
+                ? const MiuixCapsuleBorder()
+                : theme.enableSquircle
                 ? MiuixSquircleBorder(
                     borderRadius: BorderRadius.circular(indicatorRadius),
                     side: BorderSide.none,
@@ -1923,3 +1941,4 @@ class _MiuixFloatingNavigationBarItemState
     );
   }
 }
+
