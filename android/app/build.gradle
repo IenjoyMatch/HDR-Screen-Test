@@ -12,8 +12,15 @@ android {
         versionCode flutter.versionCode
         versionName flutter.versionName
     }
-    // The public test build uses a debug key; configure a private release key for production.
-    buildTypes { release { signingConfig signingConfigs.debug } }
+    signingConfigs {
+        release {
+            storeFile file(System.getenv('HDR_KEYSTORE_PATH') ?: 'missing-release-keystore.jks')
+            storePassword System.getenv('HDR_KEYSTORE_PASSWORD')
+            keyAlias 'hdr-screen-test'
+            keyPassword System.getenv('HDR_KEYSTORE_PASSWORD')
+        }
+    }
+    buildTypes { release { signingConfig signingConfigs.release } }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
 flutter { source '../..' }
