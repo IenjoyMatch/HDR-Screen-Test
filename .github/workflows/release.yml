@@ -1,4 +1,4 @@
-name: Release v0.1.5
+name: Release v1.0.0
 on:
   workflow_dispatch:
   push:
@@ -7,7 +7,7 @@ permissions:
   contents: write
 jobs:
   build-and-release:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Release v0.1.5'
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Release v1.0.0'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +26,14 @@ jobs:
           flutter analyze lib test
           flutter test test/navigation_test.dart
       - name: Build ARM APKs
-        run: flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64
+        env:
+          HDR_KEYSTORE_BASE64: ${{ secrets.HDR_KEYSTORE_BASE64 }}
+          HDR_KEYSTORE_PASSWORD: ${{ secrets.HDR_KEYSTORE_PASSWORD }}
+          HDR_KEYSTORE_PATH: ${{ runner.temp }}/hdr-release.jks
+        run: |
+          test -n "$HDR_KEYSTORE_BASE64" && test -n "$HDR_KEYSTORE_PASSWORD"
+          printf '%s' "$HDR_KEYSTORE_BASE64" | base64 --decode > "$HDR_KEYSTORE_PATH"
+          flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64
       - name: Verify APK sizes and signatures
         run: |
           for apk in build/app/outputs/flutter-apk/*-release.apk; do
@@ -40,7 +47,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk HDR-Screen-Test-v0.1.5-arm64-v8a.apk
-          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk HDR-Screen-Test-v0.1.5-armeabi-v7a.apk
-          gh release create v0.1.5 HDR-Screen-Test-v0.1.5-arm64-v8a.apk HDR-Screen-Test-v0.1.5-armeabi-v7a.apk --title 'HDR Screen Test v0.1.5' --notes-file RELEASE_NOTES_v0.1.5.md
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk HDR-Screen-Test-v1.0.0-arm64-v8a.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk HDR-Screen-Test-v1.0.0-armeabi-v7a.apk
+          gh release create v1.0.0 HDR-Screen-Test-v1.0.0-arm64-v8a.apk HDR-Screen-Test-v1.0.0-armeabi-v7a.apk --title 'HDR Screen Test v1.0.0' --notes-file RELEASE_NOTES_v1.0.0.md
 
