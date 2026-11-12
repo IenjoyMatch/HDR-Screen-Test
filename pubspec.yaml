@@ -1,7 +1,7 @@
 name: hdr_screen_test
 description: Display information and HDR playback test.
 publish_to: none
-version: 0.1.5+3
+version: 1.0.0+4
 environment:
   sdk: '>=3.10.0 <4.0.0'
 dependencies:
