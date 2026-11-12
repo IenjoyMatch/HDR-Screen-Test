@@ -40,7 +40,8 @@ jobs:
             bytes=$(stat -c%s "$apk")
             echo "$apk: $bytes bytes"
             test "$bytes" -lt 30000000
-            "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose "$apk"
+            "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$apk" | tee "$RUNNER_TEMP/signature.txt"
+            grep -qi "e16e64f7648af7b1b382814f0a64341cefd0f8ad169869b8da91d8afe53f81b3" "$RUNNER_TEMP/signature.txt"
             "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$apk" | grep -E '^(package:|sdkVersion:|targetSdkVersion:|native-code:)'
           done
       - name: Publish release
